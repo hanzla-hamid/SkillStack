@@ -1,0 +1,260 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* shadcn/radix token bridge — dark theme (default) */
+    --background: 0 0% 2%;
+    --foreground: 0 0% 96%;
+
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 96%;
+
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 96%;
+
+    --primary: 45 93% 47%;
+    --primary-foreground: 0 0% 5%;
+
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 96%;
+
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 63%;
+
+    --accent: 45 93% 47%;
+    --accent-foreground: 0 0% 5%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 96%;
+
+    --border: 0 0% 16%;
+    --input: 0 0% 16%;
+    --ring: 45 93% 47%;
+
+    --chart-1: 45 93% 47%;
+    --chart-2: 45 97% 65%;
+    --chart-3: 38 92% 50%;
+    --chart-4: 0 0% 40%;
+    --chart-5: 0 0% 63%;
+
+    --radius: 1rem;
+
+    /* app-level design tokens — dark theme (default) */
+    --color-bg: #050505;
+    --color-surface: #0d0d0d;
+    --color-surface-card: #131313;
+    --color-text-primary: #f5f5f5;
+    --color-text-secondary: #a3a3a3;
+    --color-text-muted: #737373;
+    --color-border-default: rgba(255, 255, 255, 0.08);
+  }
+
+  .light {
+    /* shadcn/radix token bridge — light theme */
+    --background: 45 30% 98%;
+    --foreground: 0 0% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+
+    --primary: 45 93% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 92%;
+    --secondary-foreground: 0 0% 10%;
+
+    --muted: 0 0% 94%;
+    --muted-foreground: 0 0% 40%;
+
+    --accent: 45 93% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 88%;
+    --input: 0 0% 88%;
+    --ring: 45 93% 40%;
+
+    --chart-1: 45 93% 40%;
+    --chart-2: 45 97% 55%;
+    --chart-3: 38 92% 45%;
+    --chart-4: 0 0% 50%;
+    --chart-5: 0 0% 35%;
+
+    /* app-level design tokens — light theme */
+    --color-bg: #faf9f5;
+    --color-surface: #ffffff;
+    --color-surface-card: #f5f4f0;
+    --color-text-primary: #1a1a1a;
+    --color-text-secondary: #525252;
+    --color-text-muted: #8a8a8a;
+    --color-border-default: rgba(0, 0, 0, 0.1);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+  }
+
+  ::selection {
+    background-color: rgba(234, 179, 8, 0.25);
+    color: #fde047;
+  }
+
+  :focus-visible {
+    outline: 2px solid #eab308;
+    outline-offset: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #262626;
+    border-radius: 999px;
+    border: 2px solid var(--color-bg);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #eab308;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .gold-gradient-text {
+    background: linear-gradient(135deg, #fde047 0%, #eab308 45%, #ca8a04 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .glass-card {
+    background: color-mix(in srgb, var(--color-surface-card) 75%, transparent);
+    border: 1px solid var(--color-border-default);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .glass-strong {
+    background: color-mix(in srgb, var(--color-surface) 85%, transparent);
+    border: 1px solid var(--color-border-default);
+    backdrop-filter: blur(24px) saturate(140%);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+  }
+
+  .grid-texture-fine {
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--color-text-primary) 6%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-text-primary) 6%, transparent) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .radial-fade {
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 40%, transparent 100%);
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 40%, transparent 100%);
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 1rem;
+    z-index: 9999;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    background: #eab308;
+    color: #050505;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: left 0.2s ease;
+  }
+
+  .skip-link:focus {
+    left: 1rem;
+    outline: 2px solid #fde047;
+    outline-offset: 2px;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  .shimmer-text {
+    background: linear-gradient(
+      90deg,
+      #a3a3a3 0%,
+      #fde047 25%,
+      #eab308 50%,
+      #fde047 75%,
+      #a3a3a3 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: shimmer 4s linear infinite;
+  }
+
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(2deg); }
+  }
+
+  .animate-float-slow {
+    animation: float-slow 8s ease-in-out infinite;
+  }
+
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .animate-gradient-shift {
+    background-size: 200% 200%;
+    animation: gradient-shift 6s ease infinite;
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+  }
+
+  .animate-glow-pulse {
+    animation: glow-pulse 4s ease-in-out infinite;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}

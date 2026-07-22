@@ -1,18 +1,32 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 import { ArrowRight, BookOpen, Users, Award, Play, MessageCircle, MapPin } from 'lucide-react';
 import { GoldButton, OutlineButton, TrustBadge } from '@/components/shared';
 import { Hero3D } from '@/components/three/Hero3D';
 import { HeroDashboard } from './HeroDashboard';
 import { useLanguage } from '@/components/providers/LanguageProvider';
+import { useIntro } from '@/components/providers/IntroProvider';
 import { EASE_PREMIUM, staggerContainer, staggerItem } from '@/lib/animations';
 import { BRAND } from '@/lib/constants';
 
 export function Hero() {
   const router = useRouter();
   const { t, lang } = useLanguage();
+  const { introComplete } = useIntro();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, -120]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -24,14 +38,18 @@ export function Hero() {
 
   return (
     <section
+      ref={sectionRef}
       id="home"
       onMouseMove={handleMouseMove}
       className="relative flex min-h-screen items-center overflow-hidden pt-28 pb-16"
     >
       {/* Full-screen 3D background */}
-      <div className="absolute inset-0 z-0">
+      <motion.div
+        className="absolute inset-0 z-0"
+        style={{ scale: bgScale, y: bgY }}
+      >
         <Hero3D />
-      </div>
+      </motion.div>
 
       {/* Mouse-following radial glow */}
       <div
@@ -55,11 +73,14 @@ export function Hero() {
       <div className="pointer-events-none absolute right-1/4 bottom-1/4 z-[1] h-80 w-80 rounded-full bg-gold/8 blur-[100px] animate-glow-pulse" style={{ animationDelay: '2s' }} />
 
       {/* Content floating above 3D scene */}
-      <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 sm:px-8 lg:grid-cols-2 lg:gap-8 lg:px-12">
+      <motion.div
+        className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 sm:px-8 lg:grid-cols-2 lg:gap-8 lg:px-12 w-full"
+        style={{ y: contentY, opacity: contentOpacity }}
+      >
         <motion.div
           variants={staggerContainer}
-          initial="hidden"
-          animate="visible"
+          initial={introComplete ? "hidden" : false}
+          animate={introComplete ? "visible" : false}
           className="flex flex-col gap-6"
         >
           <motion.div variants={staggerItem}>
@@ -137,13 +158,13 @@ export function Hero() {
         <div className="relative hidden lg:block">
           <HeroDashboard />
         </div>
-      </div>
+      </motion.div>
 
       {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.15, duration: 0.3 }}
+        animate={{ opacity: introComplete ? 1 : 0 }}
+        transition={{ delay: 0.5, duration: 0.3 }}
         className="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 lg:block"
       >
         <div className="flex h-10 w-6 items-start justify-center rounded-full border border-[var(--color-border-default)] p-1.5">

@@ -5,8 +5,9 @@ import { BRAND, PROGRAMS } from "@/lib/constants";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { LanguageProvider } from "@/components/providers/LanguageProvider";
 import { AuthProvider } from "@/components/providers/AuthProvider";
+import { IntroProvider } from "@/components/providers/IntroProvider";
+import { IntroExperience } from "@/components/intro/IntroExperience";
 import {
-  LoadingScreen,
   PremiumCursor,
   DynamicBackground,
   EasterEggs,
@@ -160,19 +161,21 @@ export default function RootLayout({
         >
           <LanguageProvider>
             <AuthProvider>
-              <LoadingScreen />
-              <PremiumCursor />
-              <DynamicBackground />
-              <EasterEggs />
-              <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-              />
-              <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
-              />
-              <main id="main-content" className="relative z-10">{children}</main>
+              <IntroProvider>
+                <IntroExperience />
+                <PremiumCursor />
+                <DynamicBackground />
+                <EasterEggs />
+                <script
+                  type="application/ld+json"
+                  dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+                />
+                <script
+                  type="application/ld+json"
+                  dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+                />
+                <main id="main-content" className="relative z-10">{children}</main>
+              </IntroProvider>
             </AuthProvider>
           </LanguageProvider>
         </ThemeProvider>

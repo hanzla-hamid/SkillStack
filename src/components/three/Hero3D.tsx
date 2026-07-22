@@ -2,21 +2,16 @@
 
 import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
+import { useIntro } from '@/components/providers/IntroProvider';
 
 const Hero3DScene = dynamic(
   () => import('./Hero3DScene').then((m) => m.Hero3DScene),
   { ssr: false }
 );
 
-/**
- * Wraps the Three.js hero scene with the checks a "just render it" import skips:
- * - Skip entirely for prefers-reduced-motion (accessibility + battery)
- * - Drop to a lighter scene tier on small/low-power devices
- * - Pause the render loop the moment the hero scrolls out of view, instead of
- *   animating in the background for the rest of the session
- */
 export function Hero3D() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { introComplete } = useIntro();
   const [reducedMotion, setReducedMotion] = useState(false);
   const [webglAvailable, setWebglAvailable] = useState(true);
   const [tier, setTier] = useState<'high' | 'low'>('high');
@@ -28,7 +23,6 @@ export function Hero3D() {
     const onMotionChange = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
     motionQuery.addEventListener('change', onMotionChange);
 
-    // Detect WebGL availability before attempting to render the Canvas
     try {
       const canvas = document.createElement('canvas');
       const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
@@ -66,7 +60,7 @@ export function Hero3D() {
 
   return (
     <div ref={containerRef} className="absolute inset-0 h-full w-full">
-      <Hero3DScene tier={tier} paused={!visible} />
+      <Hero3DScene tier={tier} paused={!visible || !introComplete} />
     </div>
   );
 }
